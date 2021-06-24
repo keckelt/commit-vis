@@ -36,10 +36,10 @@ const getCommits = async (parentPath, repoName) => {
     walker.pushHead();
     const commits = await walker.getCommitsUntil(c => true);
     return commits.map(x => ({
-      sha: x.sha(),
-      msg: x.message().split('\n')[0],
+      // sha: x.sha(),
+      // msg: x.message().split('\n')[0],
+      // author: x.author(),
       date: x.date(),
-      author: x.author(),
       repo: visibleRepoName
     }));
   } catch {
