@@ -26,7 +26,7 @@
     // Assign the specification to a local variable vlSpec.
     var vlSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Commits per Group",
+      "title": "Commits per Repository",
       "config": {
         "view": {
           "strokeWidth": 0,
@@ -41,12 +41,14 @@
       "encoding": {
         "x": {
           "field": "date",
-          "timeUnit": "monthdate",
+          title: "Date",
+          "timeUnit": "yearmonthdate",
           "type": "temporal",
           "axis": { "orient": "top" }
         },
         "y": {
           "field": "repo",
+          title: "Repository",
           "type": "nominal",
           "sort": {
             "field": "repo",
@@ -57,9 +59,10 @@
         "color": {
           "aggregate": "count",
           "type": "quantitative",
+          title: "Number of Commits",
           "scale": {
-            "domain": [0, 3, 6, 9, 12, 15, 18, 21, 40],
-            "range": ["#bce4d8", "#9dd3d1", "#81c3cb", "#65b3c2", "#45a2b9", "#368fae", "#347da0", "#306a93", "#2c5985"]
+            scheme: 'tealblues',
+            type: 'linear'
           }
         }
       },

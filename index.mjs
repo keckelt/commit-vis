@@ -3,10 +3,24 @@ import path from 'path';
 import git from 'nodegit';
 import http from 'http';
 import open from 'open';
+import { Command } from 'commander/esm.mjs';
+import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 
-const reposPath = '/home/klaus/ws/CG Lab 2021/CG Lab 2021 Project-06-23-2021-10-55-44';
-const outputFile = 'commits.json'
 
+const program = new Command();
+
+program
+.requiredOption('-d, --directory <path>', 'directory with repos to generate the heatmap for')
+.option('-o, --output <filename>', 'name of the JSON output with all commits', 'commits.json')
+.option('-p, --port <number>', 'port to run the server on', '3000')
+.option('-h, --hide', 'hide repo names in output')
+.parse();
+
+const options = program.opts();
+const reposPath = options.directory;
+const outputFile = options.output;
+
+const config = {dictionaries: [adjectives, animals]};
 
 const getDirectories = (parentPath) => {
   return fs.readdirSync(parentPath).filter((entry) => {
@@ -15,17 +29,23 @@ const getDirectories = (parentPath) => {
 }
 
 const getCommits = async (parentPath, repoName) => {
-  const repo = await git.Repository.open(path.join(parentPath, repoName));
-  const walker = git.Revwalk.create(repo);
-  walker.pushHead();
-  const commits = await walker.getCommitsUntil(c => true);
-  return commits.map(x => ({
-    sha: x.sha(),
-    msg: x.message().split('\n')[0],
-    date: x.date(),
-    author: x.author(),
-    repo: repoName
-  }));
+  try {
+    const visibleRepoName = options.hide ? uniqueNamesGenerator(config) : repoName
+    const repo = await git.Repository.open(path.join(parentPath, repoName));
+    const walker = git.Revwalk.create(repo);
+    walker.pushHead();
+    const commits = await walker.getCommitsUntil(c => true);
+    return commits.map(x => ({
+      sha: x.sha(),
+      msg: x.message().split('\n')[0],
+      date: x.date(),
+      author: x.author(),
+      repo: visibleRepoName
+    }));
+  } catch {
+    console.error('Could not read repository: ', repoName);
+    return [];
+  }
 };
 
 const repos = await getDirectories(reposPath);
@@ -35,21 +55,21 @@ const commits = await Promise.all(
 
 try {
   fs.writeFileSync(outputFile, JSON.stringify(commits.flat(), null, 2));
-  console.log('Saved commits to ', outputFile)
+  console.log('Saved commits to ', outputFile);
 } catch (err) {
   console.error('Could not save commits!', err);
 }
 
 const server = http.createServer((req, res) => {
   if (req.url.includes('commits.json')) {
-    res.writeHead(200, { 'content-type': 'text/json' })
-    fs.createReadStream('commits.json').pipe(res)
+    res.writeHead(200, { 'content-type': 'text/json' });
+    fs.createReadStream('commits.json').pipe(res);
   } else {
-    res.writeHead(200, { 'content-type': 'text/html' })
-    fs.createReadStream('index.html').pipe(res)
+    res.writeHead(200, { 'content-type': 'text/html' });
+    fs.createReadStream('index.html').pipe(res);
   }
 })
 
-server.listen(3000)
-console.log('Serving visualization from http://localhost:3000')
-open('http://localhost:3000')
+server.listen(parseInt(options.port));
+console.log('Serving visualization from http://localhost:'+options.port);
+open('http://localhost:'+options.port);
