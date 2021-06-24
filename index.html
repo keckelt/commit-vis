@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Commit Heamtap</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+  <style media="screen">
+    /* Add space between Vega-Embed links  */
+    .vega-actions a {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="vis"></div>
+
+  <script>
+    // Assign the specification to a local variable vlSpec.
+    var vlSpec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": "Commits per Group",
+      "config": {
+        "view": {
+          "strokeWidth": 0,
+          "step": 13
+        },
+        "axis": {
+          "domain": false
+        }
+      },
+      "width": 1000,
+      "mark": { "type": "rect", "tooltip": true },
+      "encoding": {
+        "x": {
+          "field": "date",
+          "timeUnit": "monthdate",
+          "type": "temporal",
+          "axis": { "orient": "top" }
+        },
+        "y": {
+          "field": "repo",
+          "type": "nominal",
+          "sort": {
+            "field": "repo",
+            "op": "count",
+            "order": "descending"
+          }
+        },
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 3, 6, 9, 12, 15, 18, 21, 40],
+            "range": ["#bce4d8", "#9dd3d1", "#81c3cb", "#65b3c2", "#45a2b9", "#368fae", "#347da0", "#306a93", "#2c5985"]
+          }
+        }
+      },
+      "data": {
+        "url": "./commits.json"
+      }
+    };
+
+    // Embed the visualization in the container with id `vis`
+    vegaEmbed('#vis', vlSpec);
+  </script>
+</body>
+
+</html>
