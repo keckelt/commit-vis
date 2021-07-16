@@ -6,6 +6,7 @@ import open from 'open';
 import { Command } from 'commander/esm.mjs';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 
+console.debug('Startup: Going to read parameters');
 
 const program = new Command();
 
@@ -48,14 +49,19 @@ const getCommits = async (parentPath, repoName) => {
   }
 };
 
+
+console.debug('Fetching all directories in ', reposPath);
 const repos = await getDirectories(reposPath);
+
+
+console.debug('Fetching commits...');
 const commits = await Promise.all(
   repos.map(async (repo) => await getCommits(reposPath, repo))
 );
 
 try {
   fs.writeFileSync(outputFile, JSON.stringify(commits.flat(), null, 2));
-  console.log('Saved commits to ', outputFile);
+  console.info('Saved commits to ', outputFile);
 } catch (err) {
   console.error('Could not save commits!', err);
 }
@@ -66,10 +72,11 @@ const server = http.createServer((req, res) => {
     fs.createReadStream('commits.json').pipe(res);
   } else {
     res.writeHead(200, { 'content-type': 'text/html' });
-    fs.createReadStream('src/index.html').pipe(res);
+    console.log(new URL('./index.html', import.meta.url));
+    fs.createReadStream(new URL('./index.html', import.meta.url)).pipe(res);
   }
 })
 
 server.listen(parseInt(options.port));
-console.log('Serving visualization from http://localhost:'+options.port);
+console.info('Serving visualization from http://localhost:'+options.port);
 open('http://localhost:'+options.port);
