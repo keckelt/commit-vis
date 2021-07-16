@@ -1,5 +1,5 @@
 {
-  "name": "commit-heatmap",
+  "name": "commit-vis",
   "version": "1.0.0",
   "type": "module",
   "description": "Heatmap with number of commits for all git repos in a directory.",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keckelt/Commit-Heatmap.git"
+    "url": "git+https://github.com/keckelt/commit-vis.git"
   },
   "author": "Klaus Eckelt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/keckelt/Commit-Heatmap/issues"
+    "url": "https://github.com/keckelt/commit-vis/issues"
   },
-  "homepage": "https://github.com/keckelt/Commit-Heatmap#readme",
+  "homepage": "https://github.com/keckelt/commit-vis#readme",
   "dependencies": {
     "commander": "^7.2.0",
     "nodegit": "^0.27.0",

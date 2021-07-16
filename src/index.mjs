@@ -10,10 +10,10 @@ import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generato
 const program = new Command();
 
 program
-.requiredOption('-d, --directory <path>', 'directory with repos to generate the heatmap for')
+.option('-d, --directory <path>', 'directory with repos to generate the heatmap for', './')
+.option('-h, --hide', 'hide repo names in output')
 .option('-o, --output <filename>', 'name of the JSON output with all commits', 'commits.json')
 .option('-p, --port <number>', 'port to run the server on', '3000')
-.option('-h, --hide', 'hide repo names in output')
 .parse();
 
 const options = program.opts();
