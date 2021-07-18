@@ -1,10 +1,10 @@
 {
   "name": "commit-vis",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "Heatmap with number of commits for all git repos in a directory.",
-  "main": "src/index.mjs",
-  "bin": "src/index.mjs",
+  "main": "src/vis.mjs",
+  "bin": "cli.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
