@@ -76,7 +76,6 @@ function requestHandler(req, res) {
     fs.createReadStream('commits.json').pipe(res);
   } else {
     res.writeHead(200, { 'content-type': 'text/html' });
-    console.log(new URL('./index.html', import.meta.url));
     fs.createReadStream(new URL('./index.html', import.meta.url)).pipe(res);
   }
 }
