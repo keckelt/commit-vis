@@ -21,11 +21,11 @@ export class CommitVis {
 
   async gatherData() {
     console.debug('Fetching all directories in ', this.reposPath);
-    const repos = await getDirectories(this.reposPath);
+    const repos = await this.getDirectories(this.reposPath);
 
     console.debug('Fetching commits...');
     const commits = await Promise.all(
-      repos.map(async (repo) => await getCommits(this.reposPath, repo))
+      repos.map(async (repo) => await this.getCommits(this.reposPath, repo))
     );
 
     try {

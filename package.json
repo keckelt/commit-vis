@@ -1,6 +1,6 @@
 {
   "name": "commit-vis",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Heatmap with number of commits for all git repos in a directory.",
   "main": "src/vis.mjs",
