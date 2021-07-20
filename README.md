@@ -7,7 +7,7 @@ Create a heatmap to display the number of commits for all repositories in a dire
 
 ## Usage
 
-To create a heatmap for the repos in your current folder, simply run: 
+If you have [Node](nodejs.org/) (v14+), create a heatmap for the repos in your current folder by running: 
 
 ```sh
 npx commit-vis
