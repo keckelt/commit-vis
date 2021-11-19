@@ -1,4 +1,4 @@
-# commit-vis  ![npm (scoped)](https://img.shields.io/npm/v/commit-vis?style=flat)
+# commit-vis  [![npm (scoped)](https://img.shields.io/npm/v/commit-vis?style=flat)](https://www.npmjs.com/package/commit-vis)
 
 Create a heatmap to display the number of commits for all repositories in a directory.
 
